@@ -5,14 +5,15 @@ const {
   getProductById,
   postProduct,
 } = require("../controllers/product.controller");
+const authentication = require("../middleware/auth.middleware");
 
 // Get all products
-productRouter.get("/product", getAllProducts);
+productRouter.get("/product",authentication, getAllProducts);
 
 // Get a single product by ID
-productRouter.get("/product/:id", getProductById);
+productRouter.get("/product/:id",authentication, getProductById);
 
 //post
-productRouter.post("/product/add",postProduct);
+productRouter.post("/product/add",authentication,postProduct);
 
 module.exports = productRouter;
