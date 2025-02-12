@@ -7,6 +7,12 @@ require("dotenv").config();
 const registerUser  = async (req, res) => {
   const { fullName, email, password } = req.body;
   try {
+    const existingUser  = await UserModel.findOne({ email });
+    
+    if (existingUser ) {
+      return res.status(400).json({ message: "User  already registered" });
+    }
+
     bcrypt.hash(password, 5, async (err, hash) => {
       if (err) {
         return res.status(500).json({ message: "Error hashing password" });

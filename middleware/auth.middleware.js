@@ -1,22 +1,32 @@
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-const jwt=require("jsonwebtoken")
-require("dotenv").config()
-const authentication=(req,res,next)=>{
-    const token=req.headers.authorization
-    if(token){
-        const decoded=jwt.verify(token,process.env.key)
-        if(decoded){
-            const userID=decoded.userID
-            console.log(decoded)
-            req.body.userID=userID
-            next()
-        }
-        else{
-            res.send("Login is required first")
-        }
-    }
-    else{
-        res.send("Login first")
-    }
-}
-module.exports=authentication
+const authentication = (req, res, next) => {
+  const Authorization = req.headers.authorization;
+  const token = Authorization?.split(" ")[1];
+
+  if (!Authorization) {
+    return res.status(400).send({ msg: "Something went wrong with Authorization" });
+  }
+  if (!token) {
+    return res.status(400).send({ msg: "Unauthorized User" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.key); // Ensure your environment variable `key` is set correctly
+    req.user = decoded; // Attach the decoded token to `req.user`
+    // console.log(req,"Line 18 middelware")
+    console.log(decoded,"line 19");
+    
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ msg: "Something went wrong11" });
+  }
+};
+
+module.exports = authentication;
+
+
+
+
