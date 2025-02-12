@@ -6,7 +6,7 @@ const authentication = (req, res, next) => {
   const token = Authorization?.split(" ")[1];
  
   
-console.log(token,"line 7");
+// console.log(token,"line 7");
 
   if (!Authorization) {
     return res.status(400).send({ msg: "Something went wrong with Authorization" });

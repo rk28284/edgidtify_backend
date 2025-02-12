@@ -4,7 +4,8 @@ const Cart = require("../model/cart.model");
 // Place an order
 const placeOrder = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userID;
+console.log(userId,"Line 8")
     const { shippingAddress } = req.body;
 
     const cart = await Cart.findOne({ userId }).populate("products.productId");
